@@ -63,7 +63,7 @@ def webhook():
 def send_message(recipient_id, message_text,wit_response):
 
     log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
-    log(wit_response)
+    log(wit_response["entities"]["player"]["intent"]["value"])
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
     }
@@ -75,7 +75,7 @@ def send_message(recipient_id, message_text,wit_response):
             "id": recipient_id
         },
         "message": {
-            "text": message_text
+            "text": wit_response["entities"]["player"]["intent"]["value"]
         }
         # "WIT" : {
         #     "response": wit_response,
