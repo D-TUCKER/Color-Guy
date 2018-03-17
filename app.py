@@ -60,7 +60,7 @@ def webhook():
     return "ok", 200
 
 def getUrl(name):
-    if name = "David Price":
+    if name == "David Price":
         return "https://www.facebook.com/FantasyColorGuy/videos/158181388231729/
 
 def send_message(recipient_id, message_text,wit_response):
