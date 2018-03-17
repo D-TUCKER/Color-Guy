@@ -59,18 +59,17 @@ def webhook():
 
     return "ok", 200
 
-def getUrl(name):
-    if name == "David Price":
-        return "https://www.facebook.com/FantasyColorGuy/videos/158181388231729/"
 
 def send_message(recipient_id, message_text,wit_response):
 
+    dprice_msg = """
+    "I once sat next to David Price on a flight from Toronto. He got hammered on those little nips they give you, you know? Booted in the little baggie. I’ve had better flights, I’ll tell you that.”
+"David Price is probably going to get hammered in Yankee Stadium. You can expect that he’ll only score about 0.78 points through 18 batters."
+
+    """
+
     log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
     log(wit_response["entities"]["intent"][0]["value"])
-
-    name = wit_response["entities"]["player"][0]["value"]
-    url = getUrl(name)
-
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
     }
@@ -81,23 +80,9 @@ def send_message(recipient_id, message_text,wit_response):
         "recipient": {
             "id": recipient_id
         },
-        "message":{
-    "attachment": {
-      "type": "template",
-      "payload": {
-         "template_type": "media",
-         "elements": [
-            {
-               "media_type": "image",
-               "url": url
-            }
-         ]
-      }
-    }    
-  }
-        # "message": {
-        #     "text": wit_response["entities"]["intent"][0]["value"]
-        # }
+        "message": {
+            "text": dprice_msg
+        }
         # "WIT" : {
         #     "response": wit_response,
         #     "test":"thing"
