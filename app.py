@@ -23,6 +23,9 @@ def verify():
 
     return "Hello world", 200
 
+@app.route('/assets/<path:path>')
+def send_js(path):
+    return send_from_directory('assets', path)
 
 @app.route('/', methods=['POST'])
 def webhook():
