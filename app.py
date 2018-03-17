@@ -59,11 +59,18 @@ def webhook():
 
     return "ok", 200
 
+def getUrl(name):
+    if name = "David Price":
+        return "https://www.facebook.com/FantasyColorGuy/videos/158181388231729/
 
 def send_message(recipient_id, message_text,wit_response):
 
     log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
     log(wit_response["entities"]["intent"][0]["value"])
+
+    name = wit_response["entities"]["player"][0]["value"]
+    url = getUrl(name)
+
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
     }
@@ -74,9 +81,23 @@ def send_message(recipient_id, message_text,wit_response):
         "recipient": {
             "id": recipient_id
         },
-        "message": {
-            "text": wit_response["entities"]["intent"][0]["value"]
-        }
+        "message":{
+    "attachment": {
+      "type": "template",
+      "payload": {
+         "template_type": "media",
+         "elements": [
+            {
+               "media_type": "image",
+               "url": url
+            }
+         ]
+      }
+    }    
+  }
+        # "message": {
+        #     "text": wit_response["entities"]["intent"][0]["value"]
+        # }
         # "WIT" : {
         #     "response": wit_response,
         #     "test":"thing"
