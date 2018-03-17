@@ -75,7 +75,8 @@ def send_message(recipient_id, message_text,wit_response):
             "text": message_text
         },
         "WIT" : {
-            "response": wit_response
+            "response": wit_response,
+            "test":"thing"
         }
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
