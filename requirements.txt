@@ -8,4 +8,4 @@ itsdangerous==0.24
 requests==2.10.0
 wsgiref==0.1.2
 wit==5.1.0
-setuptools==1.4
+setuptools==0.7
