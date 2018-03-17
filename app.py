@@ -63,8 +63,11 @@ def webhook():
 def send_message(recipient_id, message_text,wit_response):
 
     dprice_msg = """
-    I once sat next to David Price on a flight from Toronto. He got hammered on those little nips they give you, you know? Booted in the little baggie. I’ve had better flights, I’ll tell you that.
-David Price is probably going to get hammered in Yankee Stadium. You can expect that he’ll only score about 0.78 points through 18 batters.
+    I once sat next to David Price on a flight from Toronto. 
+    He got hammered on those little nips they give you, you know? 
+    Booted in the little baggie. I’ve had better flights, I'll tell you that.
+    David Price is probably going to get hammered in Yankee Stadium. 
+    You can expect that he’ll only score about 0.78 points through 18 batters.
     """
 
     log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
