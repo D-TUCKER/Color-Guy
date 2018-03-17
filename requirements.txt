@@ -8,3 +8,4 @@ itsdangerous==0.24
 requests==2.10.0
 wsgiref==0.1.2
 setuptools==28.8.0
+prompt_toolkit==1.0.15
