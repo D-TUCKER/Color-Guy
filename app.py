@@ -7,7 +7,7 @@ from wit import Wit
 client = Wit(os.environ["WIT_TOKEN"])
 
 import requests
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 
 app = Flask(__name__)
 
