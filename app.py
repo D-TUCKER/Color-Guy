@@ -2,6 +2,9 @@ import os
 import sys
 import json
 from datetime import datetime
+from wit import Wit
+
+client = Wit(os.environ["WIT_TOKEN"])
 
 import requests
 from flask import Flask, request
@@ -39,8 +42,8 @@ def webhook():
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
-
-                    send_message(sender_id, "Juuuust a bit outside...")
+                    wit_response = client.message(message_text)
+                    send_message(sender_id, "Juuuust a bit outside...",wit_response)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -54,7 +57,7 @@ def webhook():
     return "ok", 200
 
 
-def send_message(recipient_id, message_text):
+def send_message(recipient_id, message_text,wit_response):
 
     log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
 
@@ -70,6 +73,9 @@ def send_message(recipient_id, message_text):
         },
         "message": {
             "text": message_text
+        },
+        "WIT" : {
+            "response": wit_response
         }
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
