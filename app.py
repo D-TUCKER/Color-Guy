@@ -45,7 +45,7 @@ def webhook():
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
-                    wit_response = json.loads(str(client.message(message_text)))
+                    wit_response = client.message(message_text)
                     send_message(sender_id, "Juuuust a bit outside...",wit_response)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
@@ -63,7 +63,7 @@ def webhook():
 def send_message(recipient_id, message_text,wit_response):
 
     log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
-    log(wit_response["entities"]["player"]["intent"]["value"])
+    log(wit_response["entities"][["intent"][0]["value"])
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
     }
@@ -75,7 +75,7 @@ def send_message(recipient_id, message_text,wit_response):
             "id": recipient_id
         },
         "message": {
-            "text": wit_response["entities"]["player"]["intent"]["value"]
+            "text": wit_response["entities"]["intent"][0]["value"]
         }
         # "WIT" : {
         #     "response": wit_response,
