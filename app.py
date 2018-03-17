@@ -60,7 +60,7 @@ def webhook():
 def send_message(recipient_id, message_text,wit_response):
 
     log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
-
+    log(wit_response)
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
     }
@@ -83,7 +83,7 @@ def send_message(recipient_id, message_text,wit_response):
     if r.status_code != 200:
         log(r.status_code)
         log(r.text)
-        log(wit_response)
+ 
 
 
 def log(msg, *args, **kwargs):  # simple wrapper for logging to stdout on heroku
