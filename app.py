@@ -79,42 +79,45 @@ def send_message(recipient_id, message_text,wit_response):
         "Content-Type": "application/json"
     }
     dprice_url = "https://www.facebook.com/FantasyColorGuy/videos/158181388231729/"
-    # data = json.dumps({
-    #     "recipient": {
-    #         "id": recipient_id
-    #     },
-    #     "message": {
-    #         "text": dprice_msg
-    #     }
-    # })
-    data = json.dumps(
-        {
-  "recipient":{
-    "id": recipient_id
-  },
-  "message":{
-    "text": dprice_msg,
-    "attachment": {
-      "type": "template",
-      "payload": {
-         "template_type": "media",
-         "elements": [
-            {
-               "media_type": "video",
-               "url": dprice_url
-            }
-         ]
-      }
-    }    
-  }
-}
-    )
+    message = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "text": dprice_msg
+        }
+    })
 
-    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+    video = json.dumps(
+        {
+            "recipient":{
+                "id": recipient_id
+            },
+            "message":{
+                "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "media",
+                    "elements": [
+                        {
+                        "media_type": "video",
+                        "url": dprice_url
+                        }
+                    ]
+                }
+                }    
+            }
+        })
+
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=video)
     if r.status_code != 200:
         log(r.status_code)
         log(r.text)
  
+    r2 = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=message)
+    if r.status_code != 200:
+        log(r.status_code)
+        log(r.text)
 
 
 def log(msg, *args, **kwargs):  # simple wrapper for logging to stdout on heroku
