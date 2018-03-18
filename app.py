@@ -73,75 +73,89 @@ def send_message(recipient_id, message_text,wit_response):
     """
 
     log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
-    intent = wit_response["entities"]["intent"][0]["value"]
-    player = wit_response["entities"]["player"][0]["value"]
+    # intent = wit_response["entities"]["intent"][0]["value"]
 
-    urlMap = {
-        "David Price": {
-            "url": "https://www.facebook.com/FantasyColorGuy/videos/158181388231729/",
-            "message": dprice_msg
-        },
-        "Jose Altuve": {
-            "url": "https://www.facebook.com/FantasyColorGuy/videos/158180031565198/",
-            "message": "I dunno, something about altuve..."
-        },
-        "Clayton Kershaw": {
-            "url": "https://www.facebook.com/FantasyColorGuy/videos/158181204898414/",
-            "message": "He is good you should play him or something like that"
-        }
-    }
+    if wit_response["entities"]["player"]:
 
-    if urlMap[player]:
+        player = wit_response["entities"]["player"][0]["value"]
 
-        url = urlMap[player]["url"]
-        message = urlMap[player]["message"]
-
-        params = {
-            "access_token": os.environ["PAGE_ACCESS_TOKEN"]
-        }
-        headers = {
-            "Content-Type": "application/json"
-        }
-
-        message = json.dumps({
-            "recipient": {
-                "id": recipient_id
+        urlMap = {
+            "David Price": {
+                "url": "https://www.facebook.com/FantasyColorGuy/videos/158181388231729/",
+                "message": dprice_msg
             },
-            "message": {
-                "text": message
+            "Jose Altuve": {
+                "url": "https://www.facebook.com/FantasyColorGuy/videos/158180031565198/",
+                "message": "I dunno, something about altuve..."
+            },
+            "Clayton Kershaw": {
+                "url": "https://www.facebook.com/FantasyColorGuy/videos/158181204898414/",
+                "message": "He is good you should play him or something like that"
             }
-        })
+        }
 
-        video = json.dumps(
-            {
-                "recipient":{
+
+
+        if urlMap[player]:
+
+            url = urlMap[player]["url"]
+            message = urlMap[player]["message"]
+
+            params = {
+                "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+            }
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            message = json.dumps({
+                "recipient": {
                     "id": recipient_id
                 },
-                "message":{
-                    "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "media",
-                        "elements": [
-                            {
-                            "media_type": "video",
-                            "url": url
-                            }
-                        ]
-                    }
-                    }    
+                "message": {
+                    "text": message
                 }
             })
 
-        r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=video)
-        if r.status_code != 200:
-            log(r.status_code)
-            log(r.text)
-    
-        r2 = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=message)
-        if r.status_code != 200:
-            log(r.status_code)
-            log(r.text)
+            video = json.dumps(
+                {
+                    "recipient":{
+                        "id": recipient_id
+                    },
+                    "message":{
+                        "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "media",
+                            "elements": [
+                                {
+                                "media_type": "video",
+                                "url": url
+                                }
+                            ]
+                        }
+                        }    
+                    }
+                })
+
+            r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=video)
+            if r.status_code != 200:
+                log(r.status_code)
+                log(r.text)
+        
+            r2 = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=message)
+            if r.status_code != 200:
+                log(r.status_code)
+                log(r.text)
+        else:
+            message = json.dumps({
+                "recipient": {
+                    "id": recipient_id
+                },
+                "message": {
+                    "text": "I don't know that person :("
+                }
+            })
     else:
         message = json.dumps({
             "recipient": {
