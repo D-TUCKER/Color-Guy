@@ -1,16 +1,37 @@
-# Facebook Messenger Bot
-This is a simple python template that uses Flask to build a webhook for Facebook's Messenger Bot API.
+# Fantasy Color Guy
 
-Read more in my [tutorial that uses this repository](https://blog.hartleybrody.com/fb-messenger-bot/).
+![alt text](https://github.com/D-TUCKER/Color-Guy/blob/master/assets/fantasy_color_guy.png?raw=true "Fantasy Color Guy Logo")
 
-*New:* [Check out my Facebook Messenger Bot Course](https://facebook-messenger-bot.teachable.com/p/facebook-messenger-bot/). It walks you through the process of getting this bot hosted on heroku step-by-step, and also unlocks all the content that's hidden in this repo's branches.
+## Inspiration
 
-## "Callback verification failed"
+Given the rising prominence of daily fantasy sports over the last five years, and the obvious opportunity to win cash as a result of playing, there are obviously players who use all the data and tools available to them to gain an upper hand and win a larger share of the pot. We wanted to give more casual game players the opportunity to make better decisions in managing their line-up, but in a more lightweight, user-friendly way, to hopefully bridge the gap between the hardcore player and the casual.
 
-![Facebook Error](https://cloud.githubusercontent.com/assets/18402893/21538944/f96fcd1e-cdc7-11e6-83ee-a866190d9080.png)
+We also wanted to bring in another timeless element of sports - color commentary. Planning a line-up can be stressful, we wanted to inject a bit of humor and fun into the experience.
 
-The #1 error that gets reported in issues is that facebook returns an error message (like above) when trying to add the heroku endpoint to your facebook chat application.
+## What it does
 
-Our flask application intentionally returns a 403 Forbidden error if the token that facebook sends doesn't match the token you set using the heroku configuration variables.
+Fantasy Color Guy is a Facebook Messenger-based chatbot that takes the massive amount of statistical information available and condenses it down to inform a single decision point: Should I start a player, and if not, who should I start? It then gives algorithmically-derived color commentary on the player, team, or park using an algorithm we call Methodical Analytical Differentiated Enigmatic-Upper-Percentage, or MADE-UP for short.
 
-If you're getting this error, it likely means that you didn't set your heroku config values properly. Run `heroku config` from the command line within your application and verify that there's a key called `VERIFY_TOKEN` that has been set, and that it's set to the same value as what you've typed into the window on facebook.
+## How we built it
+
+We condensed every 2017 single season's at-bats and, based on DraftKing's scoring rules for baseball, determined the likely scores for every batter and every pitcher, as well as the average score for each position over the course of the season. (In reality, we modeled two players and two pitchers, given the limitations on time and computing power).
+
+We then trained an NLP agent, Wit.ai, to interpret requests from users with the intent of discovering (a) whether a certain player should start on a certain day, or (b) which player should start for a given position. This agent was exposed using the Facebook Messenger platform, which is the primary interface (for now) to the experience.
+
+The color commentary was written by the team, but in the real world would be created by AI trained by listening to years of Harry Caray, Tony Kornheiser, and others.
+
+## Challenges we ran into
+
+For the team, it was the first time building a Facebook Messenger app, and getting Wit.ai to play well with Heroku proved a challenge.
+
+## Accomplishments that we're proud of
+
+We trained an AI in a day to give fantasy baseball advice. That's kind of awesome.
+
+## What we learned
+
+That Python's wit package does not play well with Heroku
+That Facebook's documentation is a bit sparse when it comes to the Messaging Platform
+That Wit.ai is powerful and simple at the same time
+What's next for Fantasy Color Guy
+We're going seed round, and we're aiming for a quick acquisition by DraftKings. :)
