@@ -75,7 +75,7 @@ def send_message(recipient_id, message_text,wit_response):
     log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
     # intent = wit_response["entities"]["intent"][0]["value"]
 
-    if wit_response["entities"]:
+    if "player" in wit_response["entities"]:
 
         player = wit_response["entities"]["player"][0]["value"]
 
