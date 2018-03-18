@@ -93,6 +93,7 @@ def send_message(recipient_id, message_text,wit_response):
     "id": recipient_id
   },
   "message":{
+    "text": dprice_msg,
     "attachment": {
       "type": "template",
       "payload": {
