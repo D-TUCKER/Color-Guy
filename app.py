@@ -66,6 +66,7 @@ def send_message(recipient_id, message_text,wit_response):
     I once sat next to David Price on a flight from Toronto. 
     He got hammered on those little nips they give you, you know? 
     Booted in the little baggie. I've had better flights, I'll tell you that.
+    David Price is probably going to get hammered in Yankee Stadium.
     You can expect that he'll only score about 0.78 points through 18 batters.
     """
 
@@ -77,18 +78,37 @@ def send_message(recipient_id, message_text,wit_response):
     headers = {
         "Content-Type": "application/json"
     }
-    data = json.dumps({
-        "recipient": {
-            "id": recipient_id
-        },
-        "message": {
-            "text": dprice_msg
-        }
-        # "WIT" : {
-        #     "response": wit_response,
-        #     "test":"thing"
-        # }
-    })
+    dprice_url = "https://www.facebook.com/FantasyColorGuy/videos/158181388231729/"
+    # data = json.dumps({
+    #     "recipient": {
+    #         "id": recipient_id
+    #     },
+    #     "message": {
+    #         "text": dprice_msg
+    #     }
+    # })
+    data = json.dumps(
+        {
+  "recipient":{
+    "id": recipient_id
+  },
+  "message":{
+    "attachment": {
+      "type": "template",
+      "payload": {
+         "template_type": "media",
+         "elements": [
+            {
+               "media_type": "video",
+               "url": dprice_url
+            }
+         ]
+      }
+    }    
+  }
+}
+    )
+
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
         log(r.status_code)
