@@ -60,6 +60,8 @@ def webhook():
     return "ok", 200
 
 
+
+
 def send_message(recipient_id, message_text,wit_response):
 
     dprice_msg = """
@@ -71,20 +73,40 @@ def send_message(recipient_id, message_text,wit_response):
     """
 
     log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
-    log(wit_response["entities"]["intent"][0]["value"])
+    intent = wit_response["entities"]["intent"][0]["value"]
+    player = wit_response["entities"]["player"][0]["value"]
+
+    urlMap = {
+        "David Price": {
+            "url": "https://www.facebook.com/FantasyColorGuy/videos/158181388231729/",
+            "message": dprice_msg
+        },
+        "Jose Altuve": {
+            "url": "https://www.facebook.com/FantasyColorGuy/videos/158180031565198/",
+            "message": "I dunno, something about altuve..."
+        },
+        "Clayton Kershaw": {
+            "url": "https://www.facebook.com/FantasyColorGuy/videos/158181204898414/",
+            "message": "He is good you should play him or something like that"
+        }
+    }
+
+    url = urlMap[player]["url"]
+    message = urlMap[player]["message"]
+
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
     }
     headers = {
         "Content-Type": "application/json"
     }
-    dprice_url = "https://www.facebook.com/FantasyColorGuy/videos/158181388231729/"
+
     message = json.dumps({
         "recipient": {
             "id": recipient_id
         },
         "message": {
-            "text": dprice_msg
+            "text": message
         }
     })
 
@@ -101,7 +123,7 @@ def send_message(recipient_id, message_text,wit_response):
                     "elements": [
                         {
                         "media_type": "video",
-                        "url": dprice_url
+                        "url": url
                         }
                     ]
                 }
