@@ -91,55 +91,66 @@ def send_message(recipient_id, message_text,wit_response):
         }
     }
 
-    url = urlMap[player]["url"]
-    message = urlMap[player]["message"]
+    if urlMap[player]:
 
-    params = {
-        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
-    }
-    headers = {
-        "Content-Type": "application/json"
-    }
+        url = urlMap[player]["url"]
+        message = urlMap[player]["message"]
 
-    message = json.dumps({
-        "recipient": {
-            "id": recipient_id
-        },
-        "message": {
-            "text": message
+        params = {
+            "access_token": os.environ["PAGE_ACCESS_TOKEN"]
         }
-    })
+        headers = {
+            "Content-Type": "application/json"
+        }
 
-    video = json.dumps(
-        {
-            "recipient":{
+        message = json.dumps({
+            "recipient": {
                 "id": recipient_id
             },
-            "message":{
-                "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "media",
-                    "elements": [
-                        {
-                        "media_type": "video",
-                        "url": url
-                        }
-                    ]
-                }
-                }    
+            "message": {
+                "text": message
             }
         })
 
-    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=video)
-    if r.status_code != 200:
-        log(r.status_code)
-        log(r.text)
- 
-    r2 = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=message)
-    if r.status_code != 200:
-        log(r.status_code)
-        log(r.text)
+        video = json.dumps(
+            {
+                "recipient":{
+                    "id": recipient_id
+                },
+                "message":{
+                    "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "media",
+                        "elements": [
+                            {
+                            "media_type": "video",
+                            "url": url
+                            }
+                        ]
+                    }
+                    }    
+                }
+            })
+
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=video)
+        if r.status_code != 200:
+            log(r.status_code)
+            log(r.text)
+    
+        r2 = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=message)
+        if r.status_code != 200:
+            log(r.status_code)
+            log(r.text)
+    else:
+        message = json.dumps({
+            "recipient": {
+                "id": recipient_id
+            },
+            "message": {
+                "text": "I don't know that person :("
+            }
+        })
 
 
 def log(msg, *args, **kwargs):  # simple wrapper for logging to stdout on heroku
